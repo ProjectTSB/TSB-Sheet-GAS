@@ -56,6 +56,6 @@ function updateArtifactCategorize(): void {
   const updateDateText = new Date().toLocaleString().slice("YYYY/".length)
   scriptButton.setValue([
     `(最終更新: ${updateDateText})`,
-    `(作成中を含める:    ${isMakingInclude ? "✓" : "✗"}   )`,
+    `(作成中を含める:  ${isMakingInclude ? "✓" : "✗"} )`,
   ].join("\n"))
 }
