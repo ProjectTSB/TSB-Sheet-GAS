@@ -8,13 +8,20 @@ function updateArtifactCategorize(): void {
     return
   }
 
+  const isMakingInclude = (() => {
+    const res = SpreadsheetApp.getUi().alert("作成中の神器を含めますか？", SpreadsheetApp.getUi().ButtonSet.YES_NO)
+    if (res === SpreadsheetApp.getUi().Button.CLOSE || res === SpreadsheetApp.getUi().Button.CANCEL) return undefined
+    return res === SpreadsheetApp.getUi().Button.YES
+  })()
+  if (isMakingInclude === undefined) return
+
   const artifactSheetContents = artifactSheet.getDataRange().getDisplayValues()
 
   const artifactSheetHeaders = artifactSheetContents[ARTIFACT_SHEET_HEADER_ROW - 1]
   const artifactSheetData = artifactSheetContents.slice(ARTIFACT_SHEET_DATA_ROW_START - 1)
   const artifactAttributes = artifactSheetData
     .map(row => Object.fromEntries(row.map((cell, i) => [artifactSheetHeaders[i], cell])))
-    .filter(ARTIFACT_PRE_PREDICATE)
+    .filter(isMakingInclude ? ARTIFACT_PREDICATE_INCLUDE_MAKING : ARTIFACT_PREDICATE_CREATED_ONLY)
 
   const flattenSchema = (schema: Schema[]): ArtifactPredicate[] => schema.flatMap(([predicate, children]) =>
     children
@@ -47,5 +54,8 @@ function updateArtifactCategorize(): void {
 
   const scriptButton = sheet.getRange(SCRIPT_BUTTON_LINE2_ROW, SCRIPT_BUTTON_LINE2_COL)
   const updateDateText = new Date().toLocaleString().slice("YYYY/".length)
-  scriptButton.setValue(`(最終更新: ${updateDateText})`)
+  scriptButton.setValue([
+    `(最終更新: ${updateDateText})`,
+    `(作成中を含める:    ${isMakingInclude ? "✓" : "✗"}   )`,
+  ].join("\n"))
 }

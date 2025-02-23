@@ -11,10 +11,12 @@ const ARTIFACT_SHEET_NAME = "神器"
 const ARTIFACT_SHEET_HEADER_ROW: number = 2
 const ARTIFACT_SHEET_DATA_ROW_START: number = 5
 
-const ARTIFACT_PRE_PREDICATE: ArtifactPredicate = attr => attr["status"] === "作成済" && attr["is_set"] == "FALSE"
-const ARTIFACT_MAKING_PREDICATE: ArtifactPredicate = attr => attr["status"] === "作成中"
+const ARTIFACT_PREDICATE_CREATED_ONLY: ArtifactPredicate =
+  attr => attr["status"] === "作成済" && attr["is_set"] == "FALSE"
+const ARTIFACT_PREDICATE_INCLUDE_MAKING: ArtifactPredicate =
+  attr => (attr["status"] === "作成済" || attr["status"] === "作成中") && attr["is_set"] == "FALSE"
 
-const SCRIPT_BUTTON_LINE2_ROW: number = 4
+const SCRIPT_BUTTON_LINE2_ROW: number = 3
 const SCRIPT_BUTTON_LINE2_COL: number = 1
 
 const CATEGORIZE_SHEET_MATRIX_ROW_START: number = 5
