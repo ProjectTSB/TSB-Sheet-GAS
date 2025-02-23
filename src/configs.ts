@@ -11,10 +11,10 @@ const ARTIFACT_SHEET_NAME = "神器"
 const ARTIFACT_SHEET_HEADER_ROW: number = 2
 const ARTIFACT_SHEET_DATA_ROW_START: number = 5
 
-const ARTIFACT_PREDICATE_CREATED_ONLY: ArtifactPredicate =
-  attr => attr["status"] === "作成済" && attr["is_set"] == "FALSE"
-const ARTIFACT_PREDICATE_INCLUDE_MAKING: ArtifactPredicate =
-  attr => (attr["status"] === "作成済" || attr["status"] === "作成中") && attr["is_set"] == "FALSE"
+const ARTIFACT_PREDICATE_CREATED_ONLY: ArtifactPredicate = attr =>
+  attr["status"] === "作成済" && attr["is_set"] == "FALSE"
+const ARTIFACT_PREDICATE_INCLUDE_MAKING: ArtifactPredicate = attr =>
+  (attr["status"] === "作成済" || attr["status"] === "作成中") && attr["is_set"] == "FALSE"
 
 const SCRIPT_BUTTON_LINE2_ROW: number = 3
 const SCRIPT_BUTTON_LINE2_COL: number = 1
@@ -36,10 +36,10 @@ const CATEGORIZE_MATRIX_ROW_SCHEMA: Schema[] = (() => {
     [attr => damageTypes1.every(s => attr[`type_${s}`] === "FALSE")] satisfies Schema,
   ]
 
-  const categories = ["レベル1", "レベル2", "レベル3", "レベル4", "チェスト", "MOBドロップ", "取引"]
+  const ranks = ["レベル1", "レベル2", "レベル3", "レベル4", "レベル4.1", "恒常", "その他"]
   const dim3 = [
-    [attr => categories.some(s => attr["category"] === s)] satisfies Schema,
-    ...categories.map(s => [attr => attr["category"] === s, dim2] satisfies Schema),
+    [attr => ranks.some(s => attr["rank"] === s)] satisfies Schema,
+    ...ranks.map(s => [attr => attr["rank"] === s, dim2] satisfies Schema),
   ]
 
   return dim3
