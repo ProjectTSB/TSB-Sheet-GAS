@@ -43,7 +43,8 @@ function updateArtifactCategorize(): void {
     categorizeMatrixColPredicates.map(colPredicate =>
       artifactAttributes
         .filter(attr => rowPredicate(attr) && colPredicate(attr))
-        .map(attr => `${`0000${attr["id"]}`.slice(-4)} ${IS_MAKING_ARTIFACT(attr) ? "🚧 " : ""}${attr["name"]}`),
+        .map(attr => [attr, IS_MAKING_ARTIFACT(attr)] as const)
+        .map(([attr, isMaking]) => [`${`0000${attr["id"]}`.slice(-4)} ${IS_MAKING_ARTIFACT(attr) ? "🚧 " : ""}${attr["name"]}`, isMaking] as const),
     ),
   )
 
@@ -52,7 +53,11 @@ function updateArtifactCategorize(): void {
 
   categorizeMatrixRange.setValues(categorizeMatrix.map(row => row.map(col => col.length)))
   categorizeMatrixRange.setNumberFormat("0")
-  categorizeMatrixRange.setNotes(categorizeMatrix.map(row => row.map(col => col.join("\n"))))
+  categorizeMatrixRange.setNotes(categorizeMatrix.map(row => row.map(col => col.map(cell => cell[0]).join("\n"))))
+  categorizeMatrixRange.setFontWeights(categorizeMatrix.map(row => row.map(col => col.length > 0 ? "bold" : "normal")))
+  categorizeMatrixRange.setBackgrounds(categorizeMatrix.map(row => row.map(col => ({ 0: null, 1: "#CBE0D5" })[col.length] ?? "#C9DAF8")))
+  categorizeMatrixRange.setFontColors(categorizeMatrix.map(row => row.map(col => col.length > 0 ? "#000000" : "#B7B7B7")))
+  categorizeMatrixRange.setFontLines(categorizeMatrix.map(row => row.map(col => col.length > 0 ? "underline" : "none")))
 
   const scriptButton = sheet.getRange(SCRIPT_BUTTON_LINE2_ROW, SCRIPT_BUTTON_LINE2_COL)
   const updateDateText = new Date().toLocaleString().slice("YYYY/".length)
