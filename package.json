@@ -6,7 +6,7 @@
     "login": "clasp login",
     "setup": "clasp settings rootDir ./src scriptId",
     "open": "clasp open",
-    "push": "clasp push",
+    "push": "git add . && git commit -m \":hammer: update script\" && git push origin && clasp push",
     "push:watch": "clasp push --watch",
     "lint": "eslint --fix src/**"
   },
