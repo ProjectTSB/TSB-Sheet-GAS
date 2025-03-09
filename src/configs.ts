@@ -31,7 +31,7 @@ const CATEGORIZE_MATRIX_ROW_SCHEMA: Schema[] = (() => {
 
   const damageTypes1 = ["physical", "magic"]
   const dim2 = [
-    [attr => damageTypes1.some(s => attr[`type_${s}`] === "TRUE")] satisfies Schema,
+    [() => true] satisfies Schema,
     ...damageTypes1.map(s => [attr => attr[`type_${s}`] === "TRUE", dim1] satisfies Schema),
     [attr => damageTypes1.every(s => attr[`type_${s}`] === "FALSE")] satisfies Schema,
   ]
@@ -60,7 +60,7 @@ const CATEGORIZE_MATRIX_COL_SCHEMA: Schema[] = (() => {
 
   const artifactTypes = ["weak", "strong"]
   const dim3 = [
-    [attr => artifactTypes.some(s => attr[`is_${s}_artifact`] === "TRUE")] satisfies Schema,
+    [() => true] satisfies Schema,
     ...artifactTypes.map(s => [attr => attr[`is_${s}_artifact`] === "TRUE", dim2] satisfies Schema),
     [attr => artifactTypes.every(s => attr[`is_${s}_artifact`] === "FALSE"), dim2] satisfies Schema,
   ]
