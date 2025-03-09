@@ -72,6 +72,7 @@ const CATEGORIZE_MATRIX_COL_SCHEMA: Schema[] = (() => {
     [attr => attr["cooldown_type"] === "2", dim3],
     [attr => attr["cooldown_type"] === "3", dim1],
     [attr => attr["cooldown_type"] === "4", dim1],
-    [attr => attr["cooldown_type"] === "0", dim1],
+    [attr => attr["is_gcd_artifact"] === "TRUE", dim3],
+    [attr => attr["cooldown_type"] === "0" && attr["is_gcd_artifact"] === "FALSE", dim1],
   ]
 })()
