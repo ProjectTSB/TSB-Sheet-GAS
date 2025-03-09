@@ -54,7 +54,6 @@ function updateArtifactCategorize(): void {
   categorizeMatrixRange.setValues(categorizeMatrix.map(row => row.map(col => col.length)))
   categorizeMatrixRange.setNumberFormat("0")
   categorizeMatrixRange.setNotes(categorizeMatrix.map(row => row.map(col => col.map(line => line[0]).join("\n"))))
-  categorizeMatrixRange.setFontWeights(categorizeMatrix.map(row => row.map(col => col.length > 0 ? "bold" : "normal")))
   categorizeMatrixRange.setBackgrounds(categorizeMatrix.map(row => row.map(col => ({ 0: "none", 1: "#CBE0D5" })[col.length] ?? "#C9DAF8")))
   categorizeMatrixRange.setFontColors(categorizeMatrix.map(row => row.map(col => col.length > 0 ? "#000000" : "#B7B7B7")))
   categorizeMatrixRange.setFontLines(categorizeMatrix.map(row => row.map(col => col.find(line => line[1]) ? "underline" : "none")))
