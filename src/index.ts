@@ -41,7 +41,9 @@ function updateArtifactCategorize(): void {
 
   const categorizeMatrix = categorizeMatrixRowPredicates.map(rowPredicate =>
     categorizeMatrixColPredicates.map(colPredicate =>
-      artifactAttributes.filter(attr => rowPredicate(attr) && colPredicate(attr)).map(attr => `${`0000${attr["id"]}`.slice(-4)} ${attr["name"]}`),
+      artifactAttributes
+        .filter(attr => rowPredicate(attr) && colPredicate(attr))
+        .map(attr => `${`0000${attr["id"]}`.slice(-4)} ${IS_MAKING_ARTIFACT(attr) ? "🚧" : ""} ${attr["name"]}`),
     ),
   )
 

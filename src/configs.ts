@@ -15,6 +15,7 @@ const ARTIFACT_PREDICATE_CREATED_ONLY: ArtifactPredicate = attr =>
   attr["status"] === "作成済" && attr["is_set"] == "FALSE"
 const ARTIFACT_PREDICATE_INCLUDE_MAKING: ArtifactPredicate = attr =>
   (attr["status"] === "作成済" || attr["status"] === "作成中") && attr["is_set"] == "FALSE"
+const IS_MAKING_ARTIFACT: ArtifactPredicate = attr => attr["status"] === "作成中"
 
 const SCRIPT_BUTTON_LINE2_ROW: number = 3
 const SCRIPT_BUTTON_LINE2_COL: number = 1
