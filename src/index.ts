@@ -43,7 +43,7 @@ function updateArtifactCategorize(): void {
     categorizeMatrixColPredicates.map(colPredicate =>
       artifactAttributes
         .filter(attr => rowPredicate(attr) && colPredicate(attr))
-        .map(attr => `${`0000${attr["id"]}`.slice(-4)} ${IS_MAKING_ARTIFACT(attr) ? "🚧" : ""} ${attr["name"]}`),
+        .map(attr => `${`0000${attr["id"]}`.slice(-4)} ${IS_MAKING_ARTIFACT(attr) ? "🚧 " : ""}${attr["name"]}`),
     ),
   )
 
