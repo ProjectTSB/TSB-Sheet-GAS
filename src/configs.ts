@@ -24,6 +24,12 @@ const CATEGORIZE_SHEET_MATRIX_ROW_START: number = 5
 const CATEGORIZE_SHEET_MATRIX_COL_START: number = 6
 
 const IS_AUTO_GENERATE_SUMMARY: boolean = true
+const MATRIX_COLOR_BLUE = new Color(201, 218, 248)
+const MATRIX_COLOR_GREEN = new Color(203, 224, 213)
+const MATRIX_COLOR_GRAY = new Color(217, 217, 217)
+const MATRIX_SINGLE_SUMMARY_COLOR_RATIO = 0.75
+const MATRIX_NON_SUMMARY_COLOR_RATIO = 0.5
+
 const CATEGORIZE_MATRIX_ROW_SCHEMA: Schema[] = (() => {
   const damageTypes2 = ["none", "fire", "water", "thunder"]
   const dim1 = damageTypes2.map(s => [attr => attr[`type_${s}`] === "TRUE"] satisfies Schema)

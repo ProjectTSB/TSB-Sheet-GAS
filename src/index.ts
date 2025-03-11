@@ -59,17 +59,23 @@ function updateArtifactCategorize(): void {
   categorizeMatrixRange.setValues(categorizeMatrix.map(row => row.map(col => col.length)))
   categorizeMatrixRange.setNumberFormat("0")
   categorizeMatrixRange.setNotes(categorizeMatrix.map(row => row.map(col => col.map(line => line[0]).join("\n"))))
+
   categorizeMatrixRange.setBackgrounds(
     categorizeMatrix.map((cols, rowIndex) =>
       cols.map((artifacts, colIndex) => {
-        if (artifacts.length >= 2) return "#C9DAF8"
-        if (artifacts.length === 1) return "#CBE0D5"
-
         const isSummaryRow = categorizeMatrixRowPredicates[rowIndex][1]
         const isSummaryCol = categorizeMatrixColPredicates[colIndex][1]
-        if (isSummaryRow && isSummaryCol) return "#D9D9D9"
-        if (isSummaryRow || isSummaryCol) return "#E9E9E9"
-        return "#FFFFFF"
+        const ratio = (() => {
+          if (isSummaryRow && isSummaryCol) return 1
+          if (isSummaryRow || isSummaryCol) return MATRIX_SINGLE_SUMMARY_COLOR_RATIO
+          return MATRIX_NON_SUMMARY_COLOR_RATIO
+        })()
+        const color = (() => {
+          if (artifacts.length >= 2) return MATRIX_COLOR_BLUE
+          if (artifacts.length === 1) return MATRIX_COLOR_GREEN
+          return MATRIX_COLOR_GRAY
+        })()
+        return color.multiply(ratio).toHex()
       }),
     ),
   )

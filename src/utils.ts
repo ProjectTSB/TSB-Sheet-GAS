@@ -35,3 +35,23 @@ function convertColLetterToNumber(col: string): number {
 function convertC1R1toA1(originCol: number | undefined, originRow: number | undefined, col: number, row: number): string {
   return convertColNumberToLetter(originCol ? originCol + col : col) + (originRow ? originRow + row : row)
 }
+
+class Color {
+  private r: number
+  private g: number
+  private b: number
+
+  constructor(r: number, g: number, b: number) {
+    this.r = r
+    this.g = g
+    this.b = b
+  }
+
+  public multiply(multiplier: number): Color {
+    return multiplier === 1 ? this : new Color(this.r * multiplier, this.g * multiplier, this.b * multiplier)
+  }
+
+  public toHex(): string {
+    return `#${[this.r, this.g, this.b].map(c => `0${c.toString(16).toUpperCase()}`.slice(-2)).join("")}`
+  }
+}
