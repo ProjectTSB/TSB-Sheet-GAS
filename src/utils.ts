@@ -44,6 +44,7 @@ function Color(r: number, g: number, b: number): Color {
     multiply(multiplier: number): Color {
       return multiplier === 1 ? this : Color(this.r * multiplier, this.g * multiplier, this.b * multiplier)
     },
+
     toHex(): string {
       return `#${[this.r, this.g, this.b].map(c => `0${c.toString(16).toUpperCase()}`.slice(-2)).join("")}`
     },

@@ -63,6 +63,12 @@ function updateArtifactCategorize(): void {
   categorizeMatrixRange.setBackgrounds(
     categorizeMatrix.map((cols, rowIndex) =>
       cols.map((artifacts, colIndex) => {
+        const color = (() => {
+          if (artifacts.length >= 2) return MATRIX_COLOR_BLUE
+          if (artifacts.length === 1) return MATRIX_COLOR_GREEN
+          return MATRIX_COLOR_GRAY
+        })()
+
         const isSummaryRow = categorizeMatrixRowPredicates[rowIndex][1]
         const isSummaryCol = categorizeMatrixColPredicates[colIndex][1]
         const ratio = (() => {
@@ -70,11 +76,7 @@ function updateArtifactCategorize(): void {
           if (isSummaryRow || isSummaryCol) return MATRIX_SINGLE_SUMMARY_COLOR_RATIO
           return MATRIX_NON_SUMMARY_COLOR_RATIO
         })()
-        const color = (() => {
-          if (artifacts.length >= 2) return MATRIX_COLOR_BLUE
-          if (artifacts.length === 1) return MATRIX_COLOR_GREEN
-          return MATRIX_COLOR_GRAY
-        })()
+
         return color.multiply(ratio).toHex()
       }),
     ),
