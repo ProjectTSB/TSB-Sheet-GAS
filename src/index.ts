@@ -23,10 +23,12 @@ function updateArtifactCategorize(): void {
     .map(row => Object.fromEntries(row.map((cell, i) => [artifactSheetHeaders[i], cell])))
     .filter(isMakingInclude ? ARTIFACT_PREDICATE_INCLUDE_MAKING : ARTIFACT_PREDICATE_CREATED_ONLY)
 
-  const flattenSchema = (schema: Schema[]): ArtifactPredicate[] => schema.flatMap(([predicate, children]) =>
-    children
-      ? flattenSchema(children).map(childPredicate => (attr => predicate(attr) && childPredicate(attr)) satisfies ArtifactPredicate)
-      : [predicate],
+  const flattenSchema = (schema: Schema[]): [ArtifactPredicate, boolean][] => schema.flatMap(([predicate, childrenOrIsSummary]) =>
+    (typeof childrenOrIsSummary !== "boolean")
+      ? flattenSchema(childrenOrIsSummary).map(([childPredicate, isSummary]) =>
+            [attr => predicate(attr) && childPredicate(attr), isSummary] satisfies [ArtifactPredicate, boolean],
+        )
+      : [[predicate, childrenOrIsSummary]],
   )
 
   const categorizeMatrixRowPredicates = flattenSchema(CATEGORIZE_MATRIX_ROW_SCHEMA)
@@ -39,8 +41,8 @@ function updateArtifactCategorize(): void {
     categorizeMatrixColPredicates.length,
   )
 
-  const categorizeMatrix = categorizeMatrixRowPredicates.map(rowPredicate =>
-    categorizeMatrixColPredicates.map(colPredicate =>
+  const categorizeMatrix = categorizeMatrixRowPredicates.map(([rowPredicate]) =>
+    categorizeMatrixColPredicates.map(([colPredicate]) =>
       artifactAttributes
         .filter(attr => rowPredicate(attr) && colPredicate(attr))
         .map(attr => [attr, IS_MAKING_ARTIFACT(attr)] as const)
@@ -54,7 +56,20 @@ function updateArtifactCategorize(): void {
   categorizeMatrixRange.setValues(categorizeMatrix.map(row => row.map(col => col.length)))
   categorizeMatrixRange.setNumberFormat("0")
   categorizeMatrixRange.setNotes(categorizeMatrix.map(row => row.map(col => col.map(line => line[0]).join("\n"))))
-  categorizeMatrixRange.setBackgrounds(categorizeMatrix.map(row => row.map(col => ({ 0: "none", 1: "#CBE0D5" })[col.length] ?? "#C9DAF8")))
+  categorizeMatrixRange.setBackgrounds(
+    categorizeMatrix.map((cols, rowIndex) =>
+      cols.map((artifacts, colIndex) => {
+        if (artifacts.length >= 2) return "#C9DAF8"
+        if (artifacts.length === 1) return "#CBE0D5"
+
+        const isSummaryRow = categorizeMatrixRowPredicates[rowIndex][1]
+        const isSummaryCol = categorizeMatrixColPredicates[colIndex][1]
+        if (isSummaryRow && isSummaryCol) return "#C9C9C9"
+        if (isSummaryRow || isSummaryCol) return "#D9D9D9"
+        return "#FFFFFF"
+      }),
+    ),
+  )
   categorizeMatrixRange.setFontColors(categorizeMatrix.map(row => row.map(col => col.length > 0 ? "#000000" : "#B7B7B7")))
   categorizeMatrixRange.setFontLines(categorizeMatrix.map(row => row.map(col => col.find(line => line[1]) ? "underline" : "none")))
 
