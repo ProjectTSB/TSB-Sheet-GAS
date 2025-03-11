@@ -23,18 +23,16 @@ function updateArtifactCategorize(): void {
     .map(row => Object.fromEntries(row.map((cell, i) => [artifactSheetHeaders[i], cell])))
     .filter(isMakingInclude ? ARTIFACT_PREDICATE_INCLUDE_MAKING : ARTIFACT_PREDICATE_CREATED_ONLY)
 
-  const flattenSchema = (schema: Schema[], isAutoGenerateSummary: boolean): [ArtifactPredicate, boolean][] =>
-    schema.flatMap(([predicate, children]) => {
-      if (children) {
-        return flattenSchema(children, isAutoGenerateSummary).map(([childPredicate, isSummary]) =>
-            [attr => predicate(attr) && childPredicate(attr), isSummary] satisfies [ArtifactPredicate, boolean],
-        )
-      }
-      if (isAutoGenerateSummary) {
-        return [[() => true, true], [predicate, false]]
-      }
-      return [[predicate, true]]
-    })
+  const flattenSchema = (schema: Schema[], isAutoGenerateSummary: boolean): [ArtifactPredicate, boolean][] => [
+    ...(isAutoGenerateSummary ? [[() => true, true] satisfies [ArtifactPredicate, boolean]] : []),
+    ...schema.flatMap<[ArtifactPredicate, boolean]>(([predicate, children]) =>
+      children
+        ? flattenSchema(children, isAutoGenerateSummary).map<[ArtifactPredicate, boolean]>(([childPredicate, isSummary]) =>
+            [attr => predicate(attr) && childPredicate(attr), isSummary],
+          )
+        : [[predicate, false]],
+    ),
+  ]
 
   const categorizeMatrixRowPredicates = flattenSchema(CATEGORIZE_MATRIX_ROW_SCHEMA, IS_AUTO_GENERATE_SUMMARY)
   const categorizeMatrixColPredicates = flattenSchema(CATEGORIZE_MATRIX_COL_SCHEMA, IS_AUTO_GENERATE_SUMMARY)
