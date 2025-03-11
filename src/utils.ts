@@ -44,7 +44,7 @@ function Color(r: number, g: number, b: number): Color {
     },
 
     toHex(): string {
-      return `#${[r, g, b].map(c => `0${c.toString(16).toUpperCase()}`.slice(-2)).join("")}`
+      return `#${[r, g, b].map(Math.floor).map(c => `0${c.toString(16).toUpperCase()}`.slice(-2)).join("")}`
     },
   }
 }
