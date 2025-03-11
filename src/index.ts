@@ -67,8 +67,8 @@ function updateArtifactCategorize(): void {
 
         const isSummaryRow = categorizeMatrixRowPredicates[rowIndex][1]
         const isSummaryCol = categorizeMatrixColPredicates[colIndex][1]
-        if (isSummaryRow && isSummaryCol) return "#C9C9C9"
-        if (isSummaryRow || isSummaryCol) return "#D9D9D9"
+        if (isSummaryRow && isSummaryCol) return "#D9D9D9"
+        if (isSummaryRow || isSummaryCol) return "#E9E9E9"
         return "#FFFFFF"
       }),
     ),
