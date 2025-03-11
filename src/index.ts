@@ -66,15 +66,15 @@ function updateArtifactCategorize(): void {
         const color = (() => {
           if (artifacts.length >= 2) return MATRIX_COLOR_BLUE
           if (artifacts.length === 1) return MATRIX_COLOR_GREEN
-          return MATRIX_COLOR_GRAY
+          return MATRIX_COLOR_WHITE
         })()
 
         const isSummaryRow = categorizeMatrixRowPredicates[rowIndex][1]
         const isSummaryCol = categorizeMatrixColPredicates[colIndex][1]
         const ratio = (() => {
-          if (isSummaryRow && isSummaryCol) return 1
+          if (isSummaryRow && isSummaryCol) return MATRIX_DOUBLE_SUMMARY_COLOR_RATIO
           if (isSummaryRow || isSummaryCol) return MATRIX_SINGLE_SUMMARY_COLOR_RATIO
-          return MATRIX_NON_SUMMARY_COLOR_RATIO
+          return 1
         })()
 
         return color.multiply(ratio).toHex()
