@@ -27,8 +27,8 @@ const IS_AUTO_GENERATE_SUMMARY: boolean = true
 const MATRIX_COLOR_BLUE = Color(217, 231, 255)
 const MATRIX_COLOR_GREEN = Color(215, 243, 229)
 const MATRIX_COLOR_WHITE = Color(255, 255, 255)
-const MATRIX_SINGLE_SUMMARY_COLOR_RATIO = 0.925
-const MATRIX_DOUBLE_SUMMARY_COLOR_RATIO = 0.925
+const MATRIX_SINGLE_SUMMARY_COLOR_RATIO = 0.94
+const MATRIX_DOUBLE_SUMMARY_COLOR_RATIO = 0.94
 
 const CATEGORIZE_MATRIX_ROW_SCHEMA: Schema[] = (() => {
   const damageTypes2 = ["none", "fire", "water", "thunder"]
