@@ -36,22 +36,16 @@ function convertC1R1toA1(originCol: number | undefined, originRow: number | unde
   return convertColNumberToLetter(originCol ? originCol + col : col) + (originRow ? originRow + row : row)
 }
 
-class Color {
-  private r: number
-  private g: number
-  private b: number
+type Color = { r: number, g: number, b: number, multiply: (multiplier: number) => Color, toHex: () => string }
+function Color(r: number, g: number, b: number): Color {
+  return {
+    r, g, b,
 
-  constructor(r: number, g: number, b: number) {
-    this.r = r
-    this.g = g
-    this.b = b
-  }
-
-  public multiply(multiplier: number): Color {
-    return multiplier === 1 ? this : new Color(this.r * multiplier, this.g * multiplier, this.b * multiplier)
-  }
-
-  public toHex(): string {
-    return `#${[this.r, this.g, this.b].map(c => `0${c.toString(16).toUpperCase()}`.slice(-2)).join("")}`
+    multiply(multiplier: number): Color {
+      return multiplier === 1 ? this : Color(this.r * multiplier, this.g * multiplier, this.b * multiplier)
+    },
+    toHex(): string {
+      return `#${[this.r, this.g, this.b].map(c => `0${c.toString(16).toUpperCase()}`.slice(-2)).join("")}`
+    },
   }
 }
